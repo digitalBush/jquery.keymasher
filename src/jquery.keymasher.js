@@ -1,6 +1,7 @@
 /*
-	Key Masher plugin for jQuery
+	Key Masher plugin for jQuery (https://github.com/digitalBush/jquery.keymasher)
 	Copyright (c) 2010 Josh Bush (digitalbush.com)
+	Licensed under the MIT license
 	Version: 0.1
 */
 
