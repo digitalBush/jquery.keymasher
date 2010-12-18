@@ -29,23 +29,24 @@
 
 	var KeyMasher=function(elm){
 		var modifierState={alt: false, ctrl: false,	meta: false, shift: false};
-
-		var queueModifierEvent=function(direction,modifier){	
-			modifierState[modifier]=(direction=='down');		
+		
+		var queueModifierEvent=function(direction,modifier,isForced){
+			modifierState[modifier]=isForced?'forced':(direction=='down');		
 			var event=$.extend($.Event(), modifierState, {type:'key'+direction, keyCode: modifiers[modifier], charCode: 0});
 			elm.queue('keymash',function(){
 				elm.trigger(event);
 				$(this).dequeue('keymash');
 			});
-		};		
+		};
 		
 		var queueStroke=function(key){
 			if($.type(key)==='string')
 				key=keys[key];	
-			
-			if(modifierState.shift && key.shift)
+			if(key.requiresShift && !modifierState.shift)
+				queueModifierEvent('down','shift',true);
+			else if(modifierState.shift && key.shift)
 				key=keys[key.shift];
-
+			
 			var ignore = !key.charCode || modifierState.alt || modifierState.ctrl || modifierState.meta,
 				down = $.extend($.Event('keydown'), modifierState, {keyCode: key.keyCode, charCode: 0}),
 				press = $.extend($.Event('keypress'), modifierState, {keyCode: key.charCode, charCode: key.charCode}),
@@ -63,6 +64,9 @@
 				elm.trigger(up);
 				$(this).dequeue('keymash');
 			});
+			
+			if(modifierState.shift==='forced')
+				queueModifierEvent('up','shift');			
 		};
 
 		var public={
