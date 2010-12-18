@@ -29,9 +29,10 @@
 
 	var KeyMasher=function(elm){
 		var modifierState={alt: false, ctrl: false,	meta: false, shift: false};
-		
+		var forced={};
 		var queueModifierEvent=function(direction,modifier,isForced){
-			modifierState[modifier]=isForced?'forced':(direction=='down');		
+			forced[modifier]=isForced;
+			modifierState[modifier]=(direction=='down');		
 			var event=$.extend($.Event(), modifierState, {type:'key'+direction, keyCode: modifiers[modifier], charCode: 0});
 			elm.queue('keymash',function(){
 				elm.trigger(event);
@@ -65,7 +66,7 @@
 				$(this).dequeue('keymash');
 			});
 			
-			if(modifierState.shift==='forced')
+			if(forced.shift)
 				queueModifierEvent('up','shift');			
 		};
 
