@@ -18,7 +18,7 @@ describe("Basic Specifications", function() {
 		});
 		
 		it("should create a function and call type on it", function(){	
-			expect(input.val()).toEqual('a');           
+			expect(input).toHaveValue('a');           
 		});
 	});
 	
@@ -28,10 +28,16 @@ describe("Basic Specifications", function() {
 		});
 		
 		it("should have the correct value", function(){	
-			expect(input.val()).toEqual('a');           
+			expect(input).toHaveValue('a');           
 		});
 		
-		//TODO: test event stream
+		it("should trigger the correct event stream",function(){
+			expect(events).toMatchPropertiesOfEachInSequence([
+				{type:'keydown',keyCode:65},
+				{type:'keypress',charCode:97},
+				{type:'keyup',keyCode:65}
+			]);
+		});
 	});
 	
 	describe("when typing a number", function(){
@@ -40,10 +46,16 @@ describe("Basic Specifications", function() {
 		});
 		
 		it("should have the correct value", function(){	
-			expect(input.val()).toEqual('1');           
+			expect(input).toHaveValue('1');           
 		});
 		
-		//TODO: test event stream
+		it("should trigger the correct event stream",function(){
+			expect(events).toMatchPropertiesOfEachInSequence([
+				{type:'keydown',keyCode:49},
+				{type:'keypress',charCode:49},
+				{type:'keyup',keyCode:49}
+			]);
+		});
 	});
 	
 	describe("when typing a symbol", function(){
@@ -52,10 +64,18 @@ describe("Basic Specifications", function() {
 		});
 		
 		it("should have the correct value", function(){	
-			expect(input.val()).toEqual('!');           
+			expect(input).toHaveValue('!');           
 		});
 		
-		//TODO: test event stream
+		it("should trigger the correct event stream",function(){
+			expect(events).toMatchPropertiesOfEachInSequence([
+				{type:'keydown',keyCode:16},
+				{type:'keydown',keyCode:49},
+				{type:'keypress',charCode:33},
+				{type:'keyup',keyCode:49},
+				{type:'keyup',keyCode:16}
+			]);
+		});
 	});
 	
 	describe("when holding shift", function(){
@@ -65,10 +85,18 @@ describe("Basic Specifications", function() {
 			});
 			
 			it("should have the correct value", function(){
-				expect(input.val()).toEqual('A');            
+				expect(input).toHaveValue('A');            
 			});
 			
-			//TODO: test event stream
+			it("should trigger the correct event stream",function(){
+			expect(events).toMatchPropertiesOfEachInSequence([
+				{type:'keydown',keyCode:16},
+				{type:'keydown',keyCode:65,shift:true},
+				{type:'keypress',charCode:65,shift:true},
+				{type:'keyup',keyCode:65,shift:true},
+				{type:'keyup',keyCode:16}
+			]);
+		});
 		});
 		
 		describe("and typing upper case alpha", function(){
@@ -76,11 +104,21 @@ describe("Basic Specifications", function() {
 				input.mashKeys(function(keys){keys.hold('shift','A')});
 			});
 			
-			it("should have the correct value", function(){
-				expect(input.val()).toEqual('a');            
+			it(
+			
+			"should have the correct value", function(){
+				expect(input).toHaveValue('a');            
 			});
 			
-			//TODO: test event stream
+			it("should trigger the correct event stream",function(){
+				expect(events).toMatchPropertiesOfEachInSequence([
+					{type:'keydown',keyCode:16},
+					{type:'keydown',keyCode:65,shift:true},
+					{type:'keypress',charCode:97,shift:true},
+					{type:'keyup',keyCode:65,shift:true},
+					{type:'keyup',keyCode:16}
+				]);
+			});
 		});
 		
 		describe("and typing numeric", function(){
@@ -89,10 +127,18 @@ describe("Basic Specifications", function() {
 			});
 			
 			it("should have the correct value", function(){
-				expect(input.val()).toEqual('!');            
+				expect(input).toHaveValue('!');            
 			});
 			
-			//TODO: test event stream
+			it("should trigger the correct event stream",function(){
+				expect(events).toMatchPropertiesOfEachInSequence([
+					{type:'keydown',keyCode:16},
+					{type:'keydown',keyCode:49,shift:true},
+					{type:'keypress',charCode:33,shift:true},
+					{type:'keyup',keyCode:49,shift:true},
+					{type:'keyup',keyCode:16}
+				]);
+			});
 		});
 	});
 });
