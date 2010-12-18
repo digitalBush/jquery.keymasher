@@ -22,21 +22,29 @@ describe("Basic Specifications", function() {
 		});
 	});
 	
-    describe("when typing an alpha character", function(){
+    describe("when typing a lower cased alpha character", function(){
 		beforeEach(function(){
 			 input.mashKeys(function(keys){keys.type('a')});
 		});
 		
-		it("should have the correct value", function(){	
+		it("should produce the correct input value", function(){	
 			expect(input).toHaveValue('a');           
 		});
 		
-		it("should trigger the correct event stream",function(){
-			expect(events).toMatchPropertiesOfEachInSequence([
-				{type:'keydown',keyCode:65},
-				{type:'keypress',charCode:97},
-				{type:'keyup',keyCode:65}
-			]);
+		it("should trigger the correct number of events",function(){
+			expect(events.length).toEqual(3);
+		});
+		
+		it("should trigger correct keydown",function(){
+			expect(events[0]).toMatchPropertiesOf({type:'keydown',keyCode:65});
+		});
+		
+		it("should trigger correct keypress",function(){
+			expect(events[1]).toMatchPropertiesOf({type:'keypress',charCode:97});
+		});
+		
+		it("should trigger correct keyup",function(){
+			expect(events[2]).toMatchPropertiesOf({type:'keyup',keyCode:65});
 		});
 	});
 	
@@ -45,17 +53,25 @@ describe("Basic Specifications", function() {
 			 input.mashKeys(function(keys){keys.type('1')});
 		});
 		
-		it("should have the correct value", function(){	
+		it("should produce the correct input value", function(){	
 			expect(input).toHaveValue('1');           
 		});
 		
-		it("should trigger the correct event stream",function(){
-			expect(events).toMatchPropertiesOfEachInSequence([
-				{type:'keydown',keyCode:49},
-				{type:'keypress',charCode:49},
-				{type:'keyup',keyCode:49}
-			]);
+		it("should trigger the correct number of events",function(){
+			expect(events.length).toEqual(3);
 		});
+		
+		it("should trigger correct keydown",function(){
+			expect(events[0]).toMatchPropertiesOf({type:'keydown',keyCode:49});
+		});
+		
+		it("should trigger correct keypress",function(){
+			expect(events[1]).toMatchPropertiesOf({type:'keypress',charCode:49});
+		});
+		
+		it("should trigger correct keyup",function(){
+			expect(events[2]).toMatchPropertiesOf({type:'keyup',keyCode:49});
+		});		
 	});
 	
 	describe("when typing a symbol", function(){
@@ -63,82 +79,136 @@ describe("Basic Specifications", function() {
 			 input.mashKeys(function(keys){keys.type('!')});
 		});
 		
-		it("should have the correct value", function(){	
+		it("should produce the correct input value", function(){	
 			expect(input).toHaveValue('!');           
 		});
 		
-		it("should trigger the correct event stream",function(){
-			expect(events).toMatchPropertiesOfEachInSequence([
-				{type:'keydown',keyCode:16},
-				{type:'keydown',keyCode:49},
-				{type:'keypress',charCode:33},
-				{type:'keyup',keyCode:49},
-				{type:'keyup',keyCode:16}
-			]);
+		it("should trigger the correct number of events",function(){
+			expect(events.length).toEqual(5);
 		});
+		
+		it("should trigger shift keydown",function(){
+			expect(events[0]).toMatchPropertiesOf({type:'keydown',keyCode:16});
+		});
+		
+		it("should trigger correct keydown",function(){
+			expect(events[1]).toMatchPropertiesOf({type:'keydown',keyCode:49});
+		});
+		
+		it("should trigger correct keypress",function(){
+			expect(events[2]).toMatchPropertiesOf({type:'keypress',charCode:33});
+		});
+		
+		it("should trigger correct keyup",function(){
+			expect(events[3]).toMatchPropertiesOf({type:'keyup',keyCode:49});
+		});	
+		
+		it("should trigger shift keyup",function(){
+			expect(events[4]).toMatchPropertiesOf({type:'keyup',keyCode:16});
+		});		
 	});
 	
 	describe("when holding shift", function(){
-		describe("and typing lower case alpha", function(){
+		describe("and typing a lower cased alpha character", function(){
 			beforeEach(function(){
 				input.mashKeys(function(keys){keys.hold('shift','a')});
 			});
 			
-			it("should have the correct value", function(){
-				expect(input).toHaveValue('A');            
+			it("should produce the correct input value", function(){	
+				expect(input).toHaveValue('A');           
 			});
 			
-			it("should trigger the correct event stream",function(){
-			expect(events).toMatchPropertiesOfEachInSequence([
-				{type:'keydown',keyCode:16},
-				{type:'keydown',keyCode:65,shift:true},
-				{type:'keypress',charCode:65,shift:true},
-				{type:'keyup',keyCode:65,shift:true},
-				{type:'keyup',keyCode:16}
-			]);
-		});
+			it("should trigger the correct number of events",function(){
+				expect(events.length).toEqual(5);
+			});
+			
+			it("should trigger shift keydown",function(){
+				expect(events[0]).toMatchPropertiesOf({type:'keydown',keyCode:16});
+			});
+			
+			it("should trigger correct keydown",function(){
+				expect(events[1]).toMatchPropertiesOf({type:'keydown',keyCode:65});
+			});
+			
+			it("should trigger correct keypress",function(){
+				expect(events[2]).toMatchPropertiesOf({type:'keypress',charCode:65});
+			});
+			
+			it("should trigger correct keyup",function(){
+				expect(events[3]).toMatchPropertiesOf({type:'keyup',keyCode:65});
+			});	
+			
+			it("should trigger shift keyup",function(){
+				expect(events[4]).toMatchPropertiesOf({type:'keyup',keyCode:16});
+			});
 		});
 		
-		describe("and typing upper case alpha", function(){
+		describe("and typing an upper cased alpha character", function(){
 			beforeEach(function(){
 				input.mashKeys(function(keys){keys.hold('shift','A')});
 			});
 			
-			it(
-			
-			"should have the correct value", function(){
-				expect(input).toHaveValue('a');            
+			it("should produce the correct input value", function(){	
+				expect(input).toHaveValue('a');           
 			});
 			
-			it("should trigger the correct event stream",function(){
-				expect(events).toMatchPropertiesOfEachInSequence([
-					{type:'keydown',keyCode:16},
-					{type:'keydown',keyCode:65,shift:true},
-					{type:'keypress',charCode:97,shift:true},
-					{type:'keyup',keyCode:65,shift:true},
-					{type:'keyup',keyCode:16}
-				]);
+			it("should trigger the correct number of events",function(){
+				expect(events.length).toEqual(5);
 			});
+			
+			it("should trigger shift keydown",function(){
+				expect(events[0]).toMatchPropertiesOf({type:'keydown',keyCode:16});
+			});
+			
+			it("should trigger correct keydown",function(){
+				expect(events[1]).toMatchPropertiesOf({type:'keydown',keyCode:65});
+			});
+			
+			it("should trigger correct keypress",function(){
+				expect(events[2]).toMatchPropertiesOf({type:'keypress',charCode:97});
+			});
+			
+			it("should trigger correct keyup",function(){
+				expect(events[3]).toMatchPropertiesOf({type:'keyup',keyCode:65});
+			});	
+			
+			it("should trigger shift keyup",function(){
+				expect(events[4]).toMatchPropertiesOf({type:'keyup',keyCode:16});
+			});			
 		});
 		
-		describe("and typing numeric", function(){
+		describe("and typing a number", function(){
 			beforeEach(function(){
 				input.mashKeys(function(keys){keys.hold('shift','1')});
 			});
 			
-			it("should have the correct value", function(){
-				expect(input).toHaveValue('!');            
+			it("should produce the correct input value", function(){	
+				expect(input).toHaveValue('!');           
 			});
 			
-			it("should trigger the correct event stream",function(){
-				expect(events).toMatchPropertiesOfEachInSequence([
-					{type:'keydown',keyCode:16},
-					{type:'keydown',keyCode:49,shift:true},
-					{type:'keypress',charCode:33,shift:true},
-					{type:'keyup',keyCode:49,shift:true},
-					{type:'keyup',keyCode:16}
-				]);
+			it("should trigger the correct number of events",function(){
+				expect(events.length).toEqual(5);
 			});
+			
+			it("should trigger shift keydown",function(){
+				expect(events[0]).toMatchPropertiesOf({type:'keydown',keyCode:16});
+			});
+			
+			it("should trigger correct keydown",function(){
+				expect(events[1]).toMatchPropertiesOf({type:'keydown',keyCode:49});
+			});
+			
+			it("should trigger correct keypress",function(){
+				expect(events[2]).toMatchPropertiesOf({type:'keypress',charCode:33});
+			});
+			
+			it("should trigger correct keyup",function(){
+				expect(events[3]).toMatchPropertiesOf({type:'keyup',keyCode:49});
+			});	
+			
+			it("should trigger shift keyup",function(){
+				expect(events[4]).toMatchPropertiesOf({type:'keyup',keyCode:16});
+			});	
 		});
 	});
 });
