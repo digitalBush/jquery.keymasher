@@ -6,7 +6,7 @@
 */
 
 (function($,undefined){
-	var modifiers={shift:16,ctrl:17,meta:224,alt:18};
+	var modifiers={shift:16,ctrl:17,meta:91,alt:18};
 		//numberPad={'0':96,'1':97,'2':98,'3':99,'4':100,'5':101,'6':102,'7':103,'8':104,'9':105,'*':106,'+':107,'-':109,'.':110,'/':111},
 	
 	var keys=(function(){
@@ -55,7 +55,7 @@
 			
 			elm.queue('keymash',function(){
 				elm.trigger(down);
-				if(!down.isPropagationStopped() || ignore){
+				if(!down.isPropagationStopped() && !ignore){
 					elm.trigger(press);
 					if(!press.isPropagationStopped()){					
 						//need to do caret positioning
