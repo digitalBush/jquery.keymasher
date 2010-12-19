@@ -107,4 +107,29 @@ describe("Typing Specifications", function() {
 			expect(events[4]).toMatchPropertiesOf({type:'keyup',keyCode:16});
 		});		
 	});	
+	
+	describe("when typing a nonprinting character", function(){
+		beforeEach(function(){
+			 input.mashKeys(function(keys){
+				keys.type(keys.backspace)
+			 });
+		});
+		
+		it("should produce not change the input value", function(){	
+			expect(input).toHaveValue('');           
+		});
+		
+		it("should trigger the correct number of events",function(){
+			expect(events.length).toEqual(2);
+		});
+		
+		it("should trigger keydown",function(){
+			expect(events[0]).toMatchPropertiesOf({type:'keydown',keyCode:8});
+		});
+		
+		
+		it("should trigger keyup",function(){
+			expect(events[1]).toMatchPropertiesOf({type:'keyup',keyCode:8});
+		});		
+	});	
 });

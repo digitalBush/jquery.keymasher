@@ -23,7 +23,7 @@
 			if(shift)
 				defs[shift]={keyCode:keyCode,charCode:shift.charCodeAt(0),shift:value,requiresShift:index>=26};
 		});
-		$.each(noprint,function(key,value){defs[value]={keyCode:value};});
+		$.each(noprint,function(key,value){defs[key]={keyCode:value};});
 		return defs;
 	})();
 
