@@ -6,13 +6,12 @@
 */
 
 (function($,undefined){
-	var modifiers={shift:16,ctrl:17,meta:91,alt:18};
 		//numberPad={'0':96,'1':97,'2':98,'3':99,'4':100,'5':101,'6':102,'7':103,'8':104,'9':105,'*':106,'+':107,'-':109,'.':110,'/':111},
 	
 	var keys=(function(){
 		var keys    = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890`-=[]\\;',./ \t\n";
 		var shifted = "abcdefghijklmnopqrstuvwxyz!@#$%^&*()~_+{}|:\"<>?";
-		var noprint={f1:112,f2:113,f3:114,f4:115,f5:116,f6:117,f7:118,f8:119,f9:120,f10:121,f11:122,f12:123,
+		var noprint={shift:16,ctrl:17,meta:91,alt:18,f1:112,f2:113,f3:114,f4:115,f5:116,f6:117,f7:118,f8:119,f9:120,f10:121,f11:122,f12:123,
 					capslock:20,numlock:144,scrolllock:145,pageup:33,pagedown:34,end:35,home:36,backspace:8,
 					insert:45,del:46,pause:19,esc:27,left:37,up:38,right:39,down:40,printscreen:44};
 
@@ -33,7 +32,7 @@
 		var queueModifierEvent=function(direction,modifier,isForced){
 			forced[modifier]=isForced;
 			modifierState[modifier]=(direction=='down');		
-			var event=$.extend($.Event(), modifierState, {type:'key'+direction, keyCode: modifiers[modifier], charCode: 0});
+			var event=$.extend($.Event(), modifierState, {type:'key'+direction, keyCode: keys[modifier].keyCode, charCode: 0});
 			elm.queue('keymash',function(){
 				elm.trigger(event);
 				$(this).dequeue('keymash');
@@ -97,8 +96,7 @@
 			fn=function(keys){keys.type(typing)};
 		}
 		return this.each(function(){
-			var elm=$(this);
-			fn(KeyMasher(elm));			
+			fn(KeyMasher($(this)));			
 		}).dequeue("keymash");
 	};
 })(jQuery);
