@@ -12,6 +12,27 @@ describe("Typing Specifications", function() {
     afterEach(function(){
         input.remove();
     });
+
+    describe("when entering a carriage return character", function() {
+        var textarea;
+        beforeEach(function(){
+            textarea =
+                $("<textarea />")
+                .bind("keydown keypress keyup",function(e){events.push(e)})
+                .appendTo("body");
+
+            textarea.mashKeys('\r');
+        });
+
+        afterEach(function(){
+            textarea.remove();
+        });
+
+        it('should translate \\r to \\n', function(){
+            expect(textarea.val()).toBe('\n');
+        });
+    });
+
     describe("when calling mashKeys with a string",function(){
 		beforeEach(function(){
 			 input.mashKeys('a');
